@@ -7,7 +7,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   
 
   setup do
-    @user = User.create login: USER_LOGIN_ALLREADY_USED, password: Digest::MD5.hexdigest(PASSWORD_OF_ALLREADY_USED_USER)
+    @user = User.create login: USER_LOGIN_ALLREADY_USED, password: password_encrypt_method(PASSWORD_OF_ALLREADY_USED_USER)
+  end
+  
+  def password_encrypt_method pass
+    return Digest::MD5.hexdigest pass
   end
 
   #общий сценрий при котором пользователь не создаётся
@@ -90,9 +94,27 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should show user" do
   
     #Given:
-    assert !!User.find_by(login: @user.login), "Given error: User with login:#{@user.login} should exist."
+    assert !!@user, "Given error: User with login:#{@user.login} should exist."
   
     get user_url(@user)
     assert_response :success
+  end
+  
+  test "after log in session should had user_id" do
+    login = USER_LOGIN_ALLREADY_USED
+    password = PASSWORD_OF_ALLREADY_USED_USER
+    password_hash = password_encrypt_method password
+    
+    #Given:
+    user = User.find_by(login: login)
+    assert !!user, "Given error: User with login:#{login} should exist."
+    assert_equal password_hash, user.password, "Given error: User with login:#{login} should have correct hash of password."
+    
+    #When:
+    get user_login_url(login: login, password: password)
+    
+    #Then:
+    assert_response :success
+    assert_equal user.id, session[:current_user_id]
   end
 end

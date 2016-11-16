@@ -89,7 +89,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should show user" do
   
-    p @user
     #Given:
     assert !!User.find_by(login: @user.login), "Given error: User with login:#{@user.login} should exist."
   
