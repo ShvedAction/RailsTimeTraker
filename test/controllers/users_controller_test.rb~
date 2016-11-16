@@ -7,18 +7,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   
 
   setup do
-    before_all 
-    p User.count
-    @user = User.find_by login: USER_LOGIN_ALLREADY_USED
-  end
-
-  @@before_all_run = false
-
-  def before_all 
-    return if @@before_all_run
-    @@before_all_run = true
-    
-    User.create login: USER_LOGIN_ALLREADY_USED, password: Digest::MD5.hexdigest(PASSWORD_OF_ALLREADY_USED_USER)
+    @user = User.create login: USER_LOGIN_ALLREADY_USED, password: Digest::MD5.hexdigest(PASSWORD_OF_ALLREADY_USED_USER)
   end
 
   #общий сценрий при котором пользователь не создаётся
