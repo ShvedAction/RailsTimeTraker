@@ -33,6 +33,14 @@ class UsersController < ApplicationController
     end
   end
 
+  #POST /user/log_in
+  def log_in
+    current_user = User.log_in user_params
+    if current_user
+      session[:current_user_id] = current_user.id
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

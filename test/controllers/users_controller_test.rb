@@ -111,7 +111,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal password_hash, user.password, "Given error: User with login:#{login} should have correct hash of password."
     
     #When:
-    get user_login_url(login: login, password: password)
+    post user_log_in_url, params: {user: {login: login, password: password}}
     
     #Then:
     assert_response :success
