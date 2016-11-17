@@ -13,4 +13,21 @@ class User < ApplicationRecord
   def genrate_unic_login 
     self.login ||= SecureRandom.uuid.gsub('-','')
   end
+  
+  def registration!
+    self.password = User.password_encrypt_method(password)
+    self.password_confirmation = User.password_encrypt_method(password_confirmation)
+    
+    #save
+    self.registred!
+  end
+  
+  def self.log_in params
+    return User.find_by login: params[:login], password: User.password_encrypt_method(params[:password])
+  end
+  
+  protected
+  def self.password_encrypt_method password
+    return Digest::MD5.hexdigest password
+  end
 end

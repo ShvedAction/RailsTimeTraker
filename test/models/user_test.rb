@@ -14,8 +14,8 @@ class UserTest < ActiveSupport::TestCase
     new_user = User.new login: login, password: "samplePassword", password_confirmation:"incorrectConfirm"
     
     #When:
-    assert_no_difference 'User.count', "User with incorrect confirmation password have saved." do
-      new_user.save
+    assert_raises ActiveRecord::RecordInvalid, "User with incorrect confirmation password have saved." do
+      new_user.registration!
     end
     
     #Then:
@@ -33,7 +33,7 @@ class UserTest < ActiveSupport::TestCase
     
     #When:
     assert_difference 'User.count', 1, "User with correct confirmation password should saved." do
-      new_user.save
+      new_user.registration!
     end
     
     #Then:
@@ -57,6 +57,43 @@ class UserTest < ActiveSupport::TestCase
     new_user = User.new
     
     assert new_user.registred?, "default auth_type should be registred"
+  end
+  
+  test "after registration new user, class method 'log_in' should return user if hash of password and login match record in DB" do
+    login = "model_try_login"
+    password = "sample_password"
+    
+    #Given:
+    assert_nil User.find_by(login: login), "Given error: User with login #{login} should not exist."
+    
+    user = User.new login: login, password: password, password_confirmation: password
+    user.registration!
+    
+    #When:
+    logining_user = User.log_in({login: login, password: password})
+    
+    #Then:
+    assert !!logining_user, "retunred value from method log_in should not be nil"
+    assert !!logining_user.id, "id user should not be nil"
+    assert_equal login, logining_user.login
+  end
+  
+  test "class method log_in shoul return nil if wrong password" do
+    login = "model_try_login"
+    true_password = "sample_password"
+    wron_password = "wrong_password"
+    
+    #Given:
+    assert_nil User.find_by(login: login), "Given error: User with login #{login} should not exist."
+    
+    user = User.new login: login, password: true_password, password_confirmation: true_password
+    user.registration!
+    
+    #When:
+    logining_user = User.log_in({login: login, password: wron_password})
+    
+    #Then:
+    assert_nil logining_user
   end
   
 end
