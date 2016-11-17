@@ -6,8 +6,6 @@ class User < ApplicationRecord
   after_initialize :set_default_values
   before_save :genrate_unic_login, if: :temporary?
   
-  attr_accessor :password_confirmation
-  
   def set_default_values
     self.auth_type ||= 'registred'
   end
