@@ -1,30 +1,31 @@
 class TracksController < ApplicationController
   before_action :set_track, only: [:show, :edit, :update, :destroy]
+  before_action :set_user
 
-  # GET /tracks
-  # GET /tracks.json
+  # GET /users/1/tracks
+  # GET /users/1/tracks.json
   def index
-    @tracks = Track.all
+    @tracks = @user.tracks.all
   end
 
-  # GET /tracks/1
-  # GET /tracks/1.json
+  # GET /users/1/tracks/1
+  # GET /users/1/tracks/1.json
   def show
   end
 
-  # GET /tracks/new
+  # GET /users/1/tracks/new
   def new
     @track = Track.new
   end
 
-  # GET /tracks/1/edit
+  # GET /users/1/tracks/1/edit
   def edit
   end
 
-  # POST /tracks
-  # POST /tracks.json
+  # POST /users/1/tracks
+  # POST /users/1/tracks.json
   def create
-    @track = Track.new(track_params)
+    @track = @user.tracks.new(track_params)
 
     respond_to do |format|
       if @track.save
@@ -37,8 +38,8 @@ class TracksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /tracks/1
-  # PATCH/PUT /tracks/1.json
+  # PATCH/PUT /users/1/tracks/1
+  # PATCH/PUT /users/1/tracks/1.json
   def update
     respond_to do |format|
       if @track.update(track_params)
@@ -51,20 +52,28 @@ class TracksController < ApplicationController
     end
   end
 
-  # DELETE /tracks/1
-  # DELETE /tracks/1.json
+  # DELETE /users/1/tracks/1
+  # DELETE /users/1/tracks/1.json
   def destroy
     @track.destroy
     respond_to do |format|
-      format.html { redirect_to tracks_url, notice: 'Track was successfully destroyed.' }
+      format.html { redirect_to user_tracks_url @user, notice: 'Track was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
-
+  
+  def track_url track
+    user_tracks_url track.user
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_track
       @track = Track.find(params[:id])
+    end
+    
+    def set_user
+      @user = User.find params[:user_id]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

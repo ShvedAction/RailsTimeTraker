@@ -1,6 +1,7 @@
 require 'securerandom'
 
 class User < ApplicationRecord
+  has_many :tracks
   enum auth_type: [:registred, :temporary]
   validates :password, confirmation: true, if: :registred?
   after_initialize :set_default_values

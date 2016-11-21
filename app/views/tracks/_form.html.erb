@@ -1,4 +1,4 @@
-<%= form_for(track) do |f| %>
+<%= form_for [@user, track] do |f| %>
   <% if track.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(track.errors.count, "error") %> prohibited this track from being saved:</h2>
@@ -35,12 +35,7 @@
     <%= f.label :work_type %>
     <%= f.number_field :work_type %>
   </div>
-
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
-  </div>
-
+  
   <div class="actions">
     <%= f.submit %>
   </div>

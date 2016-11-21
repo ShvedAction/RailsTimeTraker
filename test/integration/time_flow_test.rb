@@ -55,7 +55,7 @@ class TimeFlowTest < ActionDispatch::IntegrationTest
       end
       
       def add_track track_hash
-        post "/users/#{current_user.id}/tracks", params: {track: track}
+        post "/users/#{current_user.id}/tracks", params: {track: track_hash}
       end
       
       def should_success_logining message=""

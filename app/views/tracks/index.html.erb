@@ -11,7 +11,7 @@
       <th>Tag</th>
       <th>Work type</th>
       <th>User</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -24,14 +24,11 @@
         <td><%= track.tag %></td>
         <td><%= track.work_type %></td>
         <td><%= track.user %></td>
-        <td><%= link_to 'Show', track %></td>
-        <td><%= link_to 'Edit', edit_track_path(track) %></td>
-        <td><%= link_to 'Destroy', track, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_user_track_path(id: track.id, user_id: track.user_id) %></td>
+        <td><%= link_to 'Destroy', user_track_path(id: track.id, user_id: track.user_id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Track', new_track_path %>
