@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116060223) do
+ActiveRecord::Schema.define(version: 20161121063508) do
+
+  create_table "tracks", force: :cascade do |t|
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "total_time"
+    t.string   "tag"
+    t.integer  "work_type"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tracks_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "login"

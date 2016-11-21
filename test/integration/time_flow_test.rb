@@ -10,7 +10,7 @@ class TimeFlowTest < ActionDispatch::IntegrationTest
       start_time: "2016-11-18T14:56:08+03:00",
       total_time: 3000,
       tag: "some tage",
-      type_work: 1, #link to type work
+      work_type: 1, #link to type work
     }
   
     user_session = build_some_user
