@@ -53,7 +53,7 @@ class UserTest < ActiveSupport::TestCase
     refute_empty temp_user.login, "Temp user should have unic login"
   end
   
-  test "on new User should auth_type init with deffault temporary" do
+  test "on new User should auth_type init with deffault auth_type is registred" do
     new_user = User.new
     
     assert new_user.registred?, "default auth_type should be registred"
@@ -96,4 +96,13 @@ class UserTest < ActiveSupport::TestCase
     assert_nil logining_user
   end
   
+  
+  test "class method create_temp should save user with no empty login" do  
+  
+    assert_difference -> {User.count}, 1, "user count should increase" do
+      temp_user = User.create_temp
+      refute_empty temp_user.login, "login of temp user should not be empty"
+    end
+    
+  end
 end
