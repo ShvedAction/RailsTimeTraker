@@ -1,6 +1,8 @@
 class TracksController < ApplicationController
   before_action :set_track, only: [:show, :edit, :update, :destroy]
-  before_action :set_user
+  before_action :set_user, except: :create
+  before_action :set_current_user, only: [:update, :destroy, :create]
+  before_action :chenge_only_my_tracks, only: [:update, :destroy]
 
   # GET /users/1/tracks
   # GET /users/1/tracks.json
@@ -25,7 +27,7 @@ class TracksController < ApplicationController
   # POST /users/1/tracks
   # POST /users/1/tracks.json
   def create
-    @track = @user.tracks.new(track_params)
+    @track = @current_user.tracks.new(track_params)
 
     respond_to do |format|
       if @track.save
@@ -74,6 +76,19 @@ class TracksController < ApplicationController
     
     def set_user
       @user = User.find params[:user_id]
+    end
+    
+    def set_current_user
+      if session[:current_user_id]
+        @current_user = User.find session[:current_user_id]
+      else
+        @current_user = User.create_temp
+        session[:current_user_id] = @current_user.id
+      end
+    end
+    
+    def chenge_only_my_tracks
+      redirect_to user_tracks_url @user if !@current_user && @current_user.id != @user.id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

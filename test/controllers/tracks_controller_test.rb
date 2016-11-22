@@ -15,16 +15,7 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
     get new_user_track_url(@user)
     assert_response :success
   end
-
-  test "should create track" do
   
-    assert_difference ->{@user.tracks.count}, 1 do
-      post user_tracks_url(@user), params: { track: { end_time: @track.end_time, start_time: @track.start_time, tag: @track.tag, total_time: @track.total_time, work_type: @track.work_type } }
-    end
-
-    assert_redirected_to user_tracks_url(@user)
-  end
-
   test "should get edit" do
     get edit_user_track_url(@track.user, @track)
     assert_response :success
