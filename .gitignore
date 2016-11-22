@@ -20,5 +20,7 @@
 # Ignore Byebug command history file.
 .byebug_history
 
+# Ignore kdevelop project file
+*.kdev4
 
 *.*~
